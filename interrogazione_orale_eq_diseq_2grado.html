@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scheda Interrogazione Orale — Eq. e Diseq. di 2° grado</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['\\[','\\]'], ['$$','$$']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+:root {
+  --bg:#f0f2f6; --card:#fff;
+  --eq:#1a4f8a; --eq-light:#e8f0fb;
+  --dq:#6b21a8; --dq-light:#f3e8ff;
+  --gv:#15643a; --gv-light:#e6f4ee;
+  --gold:#d97706; --red:#dc2626; --green:#16a34a;
+  --sol-bg:#f0fdf4; --sol-bd:#16a34a;
+  --warn-bg:#fffbeb; --warn-bd:#d97706;
+  --sep:#e2e8f0; --muted:#64748b; --text:#1e293b;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.65;padding:20px 14px 60px}
+
+/* ── HEADER ── */
+.page-header{text-align:center;background:var(--card);border-radius:var(--r);box-shadow:0 2px 10px rgba(0,0,0,.09);padding:22px 20px;margin-bottom:24px}
+.page-header h1{font-size:1.65em;margin-bottom:4px}
+.page-header .sub{color:var(--muted);font-size:.93em}
+.stamp{display:inline-block;margin-top:10px;background:#dc2626;color:#fff;font-size:.75em;font-weight:800;padding:3px 14px;border-radius:20px;letter-spacing:.08em;text-transform:uppercase}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:150px;padding:10px 16px;border:none;border-radius:8px;font-size:.9em;font-weight:700;cursor:pointer;transition:all .18s;opacity:.5}
+.tabs button.active{opacity:1;box-shadow:0 2px 10px rgba(0,0,0,.18);transform:translateY(-1px)}
+.tabs .t-eq{background:var(--eq);color:#fff}
+.tabs .t-dq{background:var(--dq);color:#fff}
+.tabs .t-gv{background:var(--gv);color:#fff}
+.tabs button:hover{opacity:.85}
+
+/* ── SECTIONS ── */
+.sec{display:none}.sec.on{display:block}
+
+/* ── LEGEND ── */
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:14px;background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:8px;padding:9px 14px;margin-bottom:22px;font-size:.85em}
+.legend strong{margin-right:4px}
+.ld{display:flex;align-items:center;gap:5px}
+
+/* ── TOPIC HEADING ── */
+.topic{font-size:.9em;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:26px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--sep)}
+
+/* ── QUESTION CARD ── */
+.qc{background:var(--card);border-radius:var(--r);box-shadow:0 1px 5px rgba(0,0,0,.07);margin-bottom:11px;overflow:hidden}
+.qh{display:flex;align-items:flex-start;gap:10px;padding:13px 14px 10px}
+.qn{font-size:.72em;font-weight:800;color:#fff;background:var(--muted);border-radius:16px;padding:2px 9px;white-space:nowrap;margin-top:3px;flex-shrink:0}
+.qt{flex:1;font-weight:600;font-size:.97em}
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+.stars{font-size:1.05em;color:var(--gold)}
+.db{font-size:.69em;font-weight:800;padding:2px 7px;border-radius:10px;color:#fff;white-space:nowrap}
+.d0{background:#94a3b8;color:#1e293b}.d1{background:var(--gold)}.d2{background:#ea580c}.d3{background:#dc2626}
+
+/* ── TOGGLE BUTTON ── */
+.tog{width:100%;background:none;border:none;border-top:1px solid var(--sep);padding:7px 14px;text-align:left;font-size:.8em;font-weight:700;color:var(--sol-bd);cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
+.tog:hover{background:#f0fdf4}
+.arr{display:inline-block;transition:transform .18s;width:10px}
+
+/* ── SOLUTION PANEL ── */
+.sol{display:none;background:var(--sol-bg);border-top:2px solid var(--sol-bd);padding:12px 14px;font-size:.91em}
+.sol.open{display:block}
+.step{margin-bottom:6px;padding-left:13px;border-left:3px solid var(--sol-bd)}
+.ans{margin-top:9px;font-weight:800;color:#15643a;padding:6px 10px;background:#dcfce7;border-radius:6px;display:inline-block}
+.note{margin-top:8px;font-size:.85em;color:var(--muted);font-style:italic;border-left:3px solid #cbd5e1;padding-left:10px}
+
+/* ── GRIDS ── */
+.gblock{margin-bottom:36px}
+.gtit{font-size:1.05em;font-weight:800;color:#fff;padding:10px 16px;border-radius:8px 8px 0 0}
+.gtit-eq{background:var(--eq)}.gtit-dq{background:var(--dq)}
+.gwrap{background:var(--card);border-radius:0 0 var(--r) var(--r);box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden}
+table.g{width:100%;border-collapse:collapse;font-size:.88em}
+table.g th{background:#f1f5f9;padding:9px 12px;text-align:left;font-weight:700;border-bottom:2px solid var(--sep)}
+table.g td{padding:9px 12px;border-bottom:1px solid var(--sep);vertical-align:top}
+table.g tr:last-child td{border-bottom:none}
+table.g tr:nth-child(even) td{background:#f8fafc}
+.vt{font-weight:800;font-size:1.07em}
+.vgr{color:#dc2626}.vi{color:#ea580c}.vs{color:#ca8a04}.vd{color:#2563eb}.vb{color:#16a34a}.vo{color:#1a4f8a}
+
+/* ── NOTE CARD ── */
+.nc{background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:8px;padding:12px 16px;font-size:.86em;color:var(--muted);margin-bottom:28px}
+.nc strong{color:var(--text)}
+
+/* ── COUNTER BADGE ── */
+.cnt{display:inline-block;background:var(--eq-light);color:var(--eq);font-size:.75em;font-weight:700;padding:2px 8px;border-radius:12px;margin-left:8px;vertical-align:middle}
+.cnt-dq{background:var(--dq-light);color:var(--dq)}
+
+@media print{
+  body{background:#fff;padding:8px}
+  .tabs{display:none}
+  .sec{display:block!important}
+  .sol{display:block!important}
+  .tog{display:none}
+  .page-break{page-break-before:always}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <h1>📋 Scheda Interrogazione Orale</h1>
+  <div class="sub">Equazioni &amp; Disequazioni di 2° grado — Istituto Tecnico a.s. 2025–2026</div>
+  <div class="stamp">🔒 Uso esclusivo insegnante</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button id="btn-eq" class="t-eq active" onclick="show('eq')">📐 Equazioni 2° grado <span class="cnt">25 dom.</span></button>
+  <button id="btn-dq" class="t-dq" onclick="show('dq')">📊 Disequazioni 2° grado <span class="cnt cnt-dq">26 dom.</span></button>
+  <button id="btn-gv" class="t-gv" onclick="show('gv')">🗂️ Griglie di valutazione</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════
+     SCHEDA A — EQUAZIONI DI 2° GRADO
+══════════════════════════════════════════════════ -->
+<div class="sec on" id="sec-eq">
+
+<div class="legend">
+  <strong>Difficoltà:</strong>
+  <div class="ld"><span class="db d0">0★</span> Definizioni / concetti</div>
+  <div class="ld"><span class="db d1">1★</span> Applicazione diretta</div>
+  <div class="ld"><span class="db d2">2★</span> Ragionamento guidato</div>
+  <div class="ld"><span class="db d3">3★</span> Padronanza critica</div>
+</div>
+
+<!-- ─ A · METODI RISOLUTIVI ─ -->
+<div class="topic">A &nbsp;·&nbsp; Metodi risolutivi</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">A1</span>
+    <span class="qt">Quanti metodi esistono per risolvere un'equazione di 2° grado? Elencali brevemente.</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">1. <strong>Formula generale</strong>: \(\displaystyle x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}\)</div>
+    <div class="step">2. <strong>Scomposizione in fattori</strong>: prodotto nullo \((x-x_1)(x-x_2)=0\)</div>
+    <div class="step">3. <strong>Completamento del quadrato</strong>: ricondurre a \((x+k)^2 = d\)</div>
+    <div class="step">4. <strong>Formula ridotta</strong> (quando \(b\) è pari, \(b=2b'\)): \(\displaystyle x = \frac{-b' \pm \sqrt{b'^2-ac}}{a}\)</div>
+    <div class="note">Accettare anche «metodo grafico» come risposta supplementare.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">A2</span>
+    <span class="qt">Risolvi rapidamente: \(x^2 - 5x = 0\). Quale metodo usi e perché?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Raccoglimento di \(x\): \(x(x-5)=0\)</div>
+    <div class="step">Prodotto nullo \(\Rightarrow x=0\) oppure \(x=5\)</div>
+    <div class="ans">\(x_1=0,\quad x_2=5\)</div>
+    <div class="note">Segnalare se l'allievo usa la formula quadratica: è inefficiente e rivela comprensione superficiale.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">A3</span>
+    <span class="qt">Risolvi: \(x^2 - 16 = 0\). Quale caso speciale riconosci?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Equazione <em>pura</em> (\(b=0\)): \(x^2 = 16\)</div>
+    <div class="ans">\(x = \pm 4\)</div>
+    <div class="note">Oppure: differenza di quadrati \((x-4)(x+4)=0\). Apprezzare chi riconosce il tipo senza formula.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">A4</span>
+    <span class="qt">Risolvi \(x^2 + 4x + 4 = 0\). Che cosa noti prima di applicare la formula?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Quadrato perfetto: \((x+2)^2 = 0\)</div>
+    <div class="ans">\(x = -2\) (radice doppia)</div>
+    <div class="note">Chi riconosce il quadrato perfetto a vista dimostra padronanza dei prodotti notevoli.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">A5</span>
+    <span class="qt">Risolvi \(2x^2 + 4x - 6 = 0\) con la formula ridotta. Qual è il vantaggio?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Dividi per 2: \(x^2+2x-3=0\). Ora \(b=2\), quindi \(b'=1\).</div>
+    <div class="step">\(x = -1 \pm \sqrt{1+3} = -1 \pm 2\)</div>
+    <div class="ans">\(x_1=1,\quad x_2=-3\)</div>
+    <div class="note">Il vantaggio: si evita di calcolare \(4ac\) con coefficienti grandi. Si applica solo quando \(b\) è pari.</div>
+  </div>
+</div>
+
+<!-- ─ B · RELAZIONI COEFFICIENTI-SOLUZIONI ─ -->
+<div class="topic">B &nbsp;·&nbsp; Formule di Viète — relazioni coefficienti / soluzioni</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B1</span>
+    <span class="qt">Enunzia le formule di Viète per \(ax^2+bx+c=0\).</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">\(\displaystyle x_1+x_2 = -\frac{b}{a}\)</div>
+    <div class="step">\(\displaystyle x_1\cdot x_2 = \frac{c}{a}\)</div>
+    <div class="note">Se \(a=1\): somma \(=-b\), prodotto \(=c\). Chiedere di ricavarle dalla fattorizzazione \(a(x-x_1)(x-x_2)\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B2</span>
+    <span class="qt">Senza risolvere: le radici di \(x^2-7x+10=0\) sono concordi o discordi? Positive o negative?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Prodotto \(=+10&gt;0\) → radici concordi (stesso segno).</div>
+    <div class="step">Somma \(=+7&gt;0\) → entrambe positive.</div>
+    <div class="ans">\(x_1=2,\;x_2=5\) (verifica immediata)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B3</span>
+    <span class="qt">Costruisci un'equazione di 2° grado con radici \(x_1=3\) e \(x_2=-1\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Somma: \(3+(-1)=2\). Prodotto: \(3\cdot(-1)=-3\).</div>
+    <div class="step">Equazione: \(x^2 - (\text{somma})\,x + (\text{prodotto})=0\)</div>
+    <div class="ans">\(x^2-2x-3=0\)</div>
+    <div class="note">Anche: \((x-3)(x+1)=0\). Valutare la fluidità del ragionamento inverso.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B4</span>
+    <span class="qt">Il discriminante \(\Delta = b^2-4ac\). Cosa dice sul numero di soluzioni reali? Tre casi.</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\(\Delta&gt;0\): 2 soluzioni reali distinte. Es. \(x^2-3x+2=0\), \(\Delta=1\).</div>
+    <div class="step">\(\Delta=0\): 1 soluzione reale doppia. Es. \(x^2-2x+1=0\), \(\Delta=0\).</div>
+    <div class="step">\(\Delta&lt;0\): nessuna soluzione reale. Es. \(x^2+x+1=0\), \(\Delta=-3\).</div>
+    <div class="note">Chiedere il significato geometrico: numero di intersezioni della parabola con l'asse \(x\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B5</span>
+    <span class="qt">\(x^2+kx+4=0\) ha soluzioni reali. Quali valori può assumere \(k\)?</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Condizione: \(\Delta\geq0 \;\Rightarrow\; k^2-16\geq0\)</div>
+    <div class="step">\((k-4)(k+4)\geq0\)</div>
+    <div class="ans">\(k\leq -4\) oppure \(k\geq 4\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">B6</span>
+    <span class="qt">Senza calcolare le radici, stabilisci se \(x^2+3x-10=0\) ha radici di segno opposto. Come lo capisci?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Prodotto \(x_1\cdot x_2 = \dfrac{c}{a} = -10 &lt; 0\) → radici di segno opposto.</div>
+    <div class="ans">Sì, le radici sono di segno opposto: \(x_1=2,\; x_2=-5\).</div>
+    <div class="note">Il prodotto negativo è la condizione sufficiente per radici discordi, senza calcolare \(\Delta\).</div>
+  </div>
+</div>
+
+<!-- ─ C · REGOLA DI CARTESIO ─ -->
+<div class="topic">C &nbsp;·&nbsp; Regola dei segni di Cartesio</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">C1</span>
+    <span class="qt">Cos'è la regola dei segni di Cartesio? A cosa serve?</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">Permette di stimare il <strong>numero massimo di radici positive</strong> di un polinomio <strong>senza calcolarle</strong>.</div>
+    <div class="step">Radici positive ≤ numero di variazioni di segno tra coefficienti consecutivi non nulli.</div>
+    <div class="step">Radici negative: applicare la regola a \(P(-x)\).</div>
+    <div class="note">Non dà il numero esatto, ma un limite superiore utile per orientarsi prima di calcolare.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">C2</span>
+    <span class="qt">Applica la regola di Cartesio a \(x^2-x-6\). Quante radici positive/negative al massimo?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Coefficienti: \(+1,\,-1,\,-6\). Variazioni: 1 (da \(+\) a \(-\)). → al più 1 radice positiva.</div>
+    <div class="step">\(P(-x)=x^2+x-6\). Coefficienti: \(+1,\,+1,\,-6\). Variazioni: 1. → al più 1 radice negativa.</div>
+    <div class="ans">1 radice positiva (\(x=3\)) e 1 radice negativa (\(x=-2\)).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">C3</span>
+    <span class="qt">Se tutti i coefficienti hanno lo stesso segno, cosa dice Cartesio sulle radici positive?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Nessuna variazione di segno → <strong>zero radici positive</strong> reali.</div>
+    <div class="ans">Es. \(x^2+2x+3\): coefficienti \(+,+,+\) → 0 radici positive (confermato: \(\Delta&lt;0\)).</div>
+  </div>
+</div>
+
+<!-- ─ D · EQUAZIONI FRATTE ─ -->
+<div class="topic">D &nbsp;·&nbsp; Equazioni fratte</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">D1</span>
+    <span class="qt">Quali sono i passi obbligati per risolvere un'equazione fratta? Elenca in ordine.</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">1. <strong>Condizioni di esistenza (C.E.)</strong>: denominatori ≠ 0</div>
+    <div class="step">2. Trovare il <strong>MCD</strong> dei denominatori</div>
+    <div class="step">3. Moltiplicare tutto per il MCD → equazione intera</div>
+    <div class="step">4. Risolvere l'equazione intera</div>
+    <div class="step">5. <strong>Verificare</strong> le soluzioni rispetto alle C.E. ed eliminare le estranee</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">D2</span>
+    <span class="qt">Cos'è una "soluzione estranea"? Perché compare nelle equazioni fratte?</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">È un valore che soddisfa l'equazione intera (dopo aver moltiplicato) ma <strong>annulla il denominatore</strong> originale.</div>
+    <div class="step">Compare perché moltiplicare per un'espressione che può essere zero non è un'operazione equivalente.</div>
+    <div class="ans">Va sempre verificata e scartata.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">D3</span>
+    <span class="qt">Risolvi: \(\dfrac{2}{x} + \dfrac{1}{x+1} = 1\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq0\), \(x\neq-1\). MCD: \(x(x+1)\).</div>
+    <div class="step">\(2(x+1)+x = x(x+1) \;\Rightarrow\; 3x+2 = x^2+x \;\Rightarrow\; x^2-2x-2=0\)</div>
+    <div class="step">\(\Delta=12\;\Rightarrow\; x=1\pm\sqrt{3}\)</div>
+    <div class="ans">\(x_1=1+\sqrt{3}\approx2.73,\quad x_2=1-\sqrt{3}\approx-0.73\) — entrambe ammissibili.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">D4</span>
+    <span class="qt">Risolvi: \(\dfrac{x+2}{x-1} = \dfrac{3}{x-1}\).</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq1\). Moltiplicando per \((x-1)\): \(x+2=3 \;\Rightarrow\; x=1\)</div>
+    <div class="step">Ma \(x=1\) viola la C.E.!</div>
+    <div class="ans">Nessuna soluzione (soluzione estranea eliminata).</div>
+    <div class="note">Esempio diretto dell'importanza della verifica finale.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">D5</span>
+    <span class="qt">Risolvi: \(\dfrac{x}{x-3} - \dfrac{2}{x+3} = \dfrac{18}{x^2-9}\).</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq\pm3\). Noto che \(x^2-9=(x-3)(x+3)\). MCD = \((x-3)(x+3)\).</div>
+    <div class="step">\(x(x+3)-2(x-3)=18 \;\Rightarrow\; x^2+3x-2x+6=18 \;\Rightarrow\; x^2+x-12=0\)</div>
+    <div class="step">\((x+4)(x-3)=0 \;\Rightarrow\; x=-4\) o \(x=3\)</div>
+    <div class="step">\(x=3\) viola la C.E. → soluzione estranea.</div>
+    <div class="ans">\(x=-4\)</div>
+  </div>
+</div>
+
+<!-- ─ E · GRADO SUPERIORE ─ -->
+<div class="topic">E &nbsp;·&nbsp; Equazioni di grado superiore al 2°</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">E1</span>
+    <span class="qt">Come si risolve \(x^3-4x=0\)?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Raccoglimento: \(x(x^2-4)=0 \;\Rightarrow\; x(x-2)(x+2)=0\)</div>
+    <div class="ans">\(x=0,\quad x=2,\quad x=-2\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">E2</span>
+    <span class="qt">Cos'è un'equazione biquadratica? Come si risolve?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">Forma \(ax^4+bx^2+c=0\) (gradi dispari assenti). Sostituzione \(t=x^2\) → equazione di 2° grado in \(t\).</div>
+    <div class="step">Per ogni \(t_i\geq0\) si risolve \(x^2=t_i\); se \(t_i&lt;0\): nessuna soluzione reale da quel ramo.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">E3</span>
+    <span class="qt">Risolvi \(x^4-5x^2+4=0\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Poni \(t=x^2\): \(t^2-5t+4=0 \;\Rightarrow\; (t-1)(t-4)=0\)</div>
+    <div class="step">\(t=1 \Rightarrow x=\pm1\); \(t=4 \Rightarrow x=\pm2\)</div>
+    <div class="ans">\(x\in\{-2,\,-1,\,1,\,2\}\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">E4</span>
+    <span class="qt">Risolvi \((x^2-1)(x^2+x-6)=0\). Quante soluzioni ti aspetti?</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Grado 4 → al più 4 soluzioni reali. Prodotto nullo: ciascun fattore = 0.</div>
+    <div class="step">\(x^2-1=0 \Rightarrow x=\pm1\)</div>
+    <div class="step">\(x^2+x-6=0 \Rightarrow (x+3)(x-2)=0 \Rightarrow x=-3,\;x=2\)</div>
+    <div class="ans">\(x\in\{-3,\,-1,\,1,\,2\}\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">E5</span>
+    <span class="qt">Un polinomio di grado \(n\) può avere più di \(n\) radici reali? Motiva.</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">No. Per il teorema fondamentale dell'algebra, un polinomio di grado \(n\) ha <em>al massimo</em> \(n\) radici nel campo reale (alcune possono essere complesse o multiple).</div>
+    <div class="note">Non richiesta la dimostrazione; valutare la chiarezza del ragionamento.</div>
+  </div>
+</div>
+
+<!-- ─ F · ESERCIZI RAPIDI MISTI ─ -->
+<div class="topic">F &nbsp;·&nbsp; Esercizi rapidi misti (verifica integrazione)</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">F1</span>
+    <span class="qt">Quante soluzioni reali ha \(x^2+2x+5=0\)? Risposta immediata, senza calcolare le radici.</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\(\Delta = 4-20 = -16 &lt; 0\)</div>
+    <div class="ans">Nessuna soluzione reale.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">F2</span>
+    <span class="qt">Dai la somma e il prodotto delle radici di \(3x^2-7x+2=0\) senza risolvere.</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\(x_1+x_2 = \dfrac{7}{3}\), \quad \(x_1\cdot x_2 = \dfrac{2}{3}\)</div>
+    <div class="ans">Somma \(=\dfrac{7}{3}\), Prodotto \(=\dfrac{2}{3}\)</div>
+    <div class="note">Verifica: \(x_1=2,\; x_2=\tfrac{1}{3}\) → \(2+\tfrac{1}{3}=\tfrac{7}{3}\) ✓, \(2\cdot\tfrac{1}{3}=\tfrac{2}{3}\) ✓</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">F3</span>
+    <span class="qt">Risolvi \(x^2 = 3x\). Quante soluzioni ha?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Porta a forma normale: \(x^2-3x=0 \;\Rightarrow\; x(x-3)=0\)</div>
+    <div class="ans">\(x_1=0,\quad x_2=3\)</div>
+    <div class="note">Errore tipico: dividere entrambi i membri per \(x\), perdendo la soluzione \(x=0\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">F4</span>
+    <span class="qt">Risolvi \((2x-3)^2=1\) senza sviluppare il quadrato.</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\((2x-3)^2=1 \;\Rightarrow\; 2x-3=\pm1\)</div>
+    <div class="step">Caso \(+\): \(2x=4 \Rightarrow x=2\). Caso \(-\): \(2x=2 \Rightarrow x=1\).</div>
+    <div class="ans">\(x_1=2,\quad x_2=1\)</div>
+    <div class="note">Il completamento del quadrato «al contrario»: metodo rapido ed elegante.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">F5</span>
+    <span class="qt">Per quale valore di \(m\) l'equazione \(x^2-mx+9=0\) ha una radice doppia?</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Radice doppia \(\Leftrightarrow \Delta=0 \;\Rightarrow\; m^2-36=0 \;\Rightarrow\; m=\pm6\)</div>
+    <div class="ans">\(m=6\) (radice doppia \(x=3\)) oppure \(m=-6\) (radice doppia \(x=-3\)).</div>
+  </div>
+</div>
+
+</div><!-- fine sec-eq -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SCHEDA B — DISEQUAZIONI DI 2° GRADO
+══════════════════════════════════════════════════ -->
+<div class="sec" id="sec-dq">
+
+<div class="legend">
+  <strong>Difficoltà:</strong>
+  <div class="ld"><span class="db d0">0★</span> Definizioni / concetti</div>
+  <div class="ld"><span class="db d1">1★</span> Applicazione diretta</div>
+  <div class="ld"><span class="db d2">2★</span> Ragionamento guidato</div>
+  <div class="ld"><span class="db d3">3★</span> Padronanza critica</div>
+</div>
+
+<!-- ─ G · CONCETTI FONDAMENTALI ─ -->
+<div class="topic">G &nbsp;·&nbsp; Concetti fondamentali</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">G1</span>
+    <span class="qt">Qual è il metodo principale per risolvere \(ax^2+bx+c&gt;0\)?</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">1. Trovare le radici \(x_1,x_2\) dell'equazione associata.</div>
+    <div class="step">2. Analizzare il segno del trinomio in base al segno di \(a\) e al valore di \(\Delta\).</div>
+    <div class="step">Regola: se \(a&gt;0\) (parabola «col sorriso») → trinomio <em>positivo fuori</em> dalle radici, <em>negativo dentro</em>.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">G2</span>
+    <span class="qt">Se \(a&gt;0\) e \(\Delta&lt;0\), quando è verificata \(ax^2+bx+c&gt;0\)?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">Parabola tutta sopra l'asse → trinomio sempre positivo.</div>
+    <div class="ans">Soluzione: \(\forall\, x\in\mathbb{R}\) (tutti i reali).</div>
+    <div class="note">Follow-up: e se fosse \(&lt;0\)? → insieme vuoto \(\emptyset\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">G3</span>
+    <span class="qt">Se \(a&gt;0\) e \(\Delta=0\), la disequazione \(ax^2+bx+c&lt;0\) ha soluzioni?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">Parabola tocca l'asse solo in \(x_0\) e sta sopra (o uguale). La disequazione <em>stretta</em> \(&lt;0\) non ha soluzioni.</div>
+    <div class="ans">La disequazione \(\leq0\) ha un'unica soluzione: \(x=x_0\). La disequazione \(&lt;0\): \(\emptyset\).</div>
+    <div class="note">Caso sottile spesso trascurato. Ottimo discriminante tra allievi precisi e approssimativi.</div>
+  </div>
+</div>
+
+<!-- ─ H · RISOLUZIONE STANDARD (Δ > 0) ─ -->
+<div class="topic">H &nbsp;·&nbsp; Risoluzione con \(\Delta &gt; 0\)</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">H1</span>
+    <span class="qt">Risolvi \(x^2-x-6&gt;0\).</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Eq. associata: \((x-3)(x+2)=0 \Rightarrow x_1=-2,\;x_2=3\)</div>
+    <div class="step">\(a=1&gt;0\) → positivo fuori dall'intervallo \((-2,3)\).</div>
+    <div class="ans">\(x\in(-\infty,-2)\cup(3,+\infty)\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">H2</span>
+    <span class="qt">Risolvi \(x^2-x-6\leq0\). Come cambia rispetto a H1?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Stesso trinomio. Cerco dove è negativo <em>o nullo</em> → dentro, estremi inclusi.</div>
+    <div class="ans">\(x\in[-2,\,3]\)</div>
+    <div class="note">Le soluzioni di H1 e H2 sono complementari: insieme coprono tutto \(\mathbb{R}\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">H3</span>
+    <span class="qt">Risolvi \(-x^2+4&gt;0\). Attenzione al segno di \(a\)!</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Eq. associata: \(x=\pm2\). \(a=-1&lt;0\) → parabola col pianto → positivo <em>dentro</em> l'intervallo.</div>
+    <div class="ans">\(x\in(-2,\,2)\)</div>
+    <div class="note">Errore tipico: non invertire la logica quando \(a&lt;0\). Legame con il grafico della parabola.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">H4</span>
+    <span class="qt">Risolvi \(2x^2-3x+1\leq0\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\(\Delta=9-8=1\;\Rightarrow\; x=\dfrac{3\pm1}{4} \;\Rightarrow\; x_1=\tfrac{1}{2},\;x_2=1\)</div>
+    <div class="step">\(a=2&gt;0\) → \(\leq0\) tra le radici.</div>
+    <div class="ans">\(\dfrac{1}{2}\leq x\leq1\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">H5</span>
+    <span class="qt">Spiega: perché la soluzione di \(x^2-4&lt;0\) è un intervallo limitato e quella di \(x^2-4&gt;0\) non lo è?</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">La parabola \(y=x^2-4\) (\(a&gt;0\)) sta sotto l'asse solo nel tratto \((-2,2)\) → soluzione chiusa e limitata.</div>
+    <div class="step">Sta sopra l'asse per \(x\) molto grandi o molto piccoli → soluzione illimitata.</div>
+    <div class="note">Risposta che dimostra comprensione geometrica: apprezzare chi visualizza mentalmente la parabola.</div>
+  </div>
+</div>
+
+<!-- ─ I · CASI PARTICOLARI ─ -->
+<div class="topic">I &nbsp;·&nbsp; Casi particolari e riflessione critica</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">I1</span>
+    <span class="qt">Risolvi \(x^2+1&gt;0\). Quanto ci vuole?</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\(\Delta=-4&lt;0\), \(a&gt;0\) → sempre positivo.</div>
+    <div class="ans">\(\forall\,x\in\mathbb{R}\) — risposta immediata, nessun calcolo necessario.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">I2</span>
+    <span class="qt">Risolvi \((x-1)^2\leq0\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">\((x-1)^2\geq0\) sempre → è \(\leq0\) solo dove vale 0.</div>
+    <div class="ans">Unica soluzione: \(x=1\).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">I3</span>
+    <span class="qt">Per quali valori di \(k\) la disequazione \(x^2+kx+k&gt;0\) è verificata per tutti i reali?</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">Condizione: \(a=1&gt;0\) e \(\Delta&lt;0\).</div>
+    <div class="step">\(\Delta=k^2-4k&lt;0 \;\Rightarrow\; k(k-4)&lt;0\)</div>
+    <div class="ans">\(0&lt;k&lt;4\)</div>
+    <div class="note">Domanda parametrica: richiede di risolvere a sua volta una disequazione di 2° grado!</div>
+  </div>
+</div>
+
+<!-- ─ L · DISEQUAZIONI FRAZIONARIE ─ -->
+<div class="topic">L &nbsp;·&nbsp; Disequazioni frazionarie</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L1</span>
+    <span class="qt">Come si risolve una disequazione frazionaria \(\dfrac{N(x)}{D(x)}&gt;0\)? Descrivi il metodo.</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">1. <strong>C.E.</strong>: \(D(x)\neq0\)</div>
+    <div class="step">2. Trovare gli zeri di \(N(x)\) e di \(D(x)\) → suddividono la retta reale in intervalli.</div>
+    <div class="step">3. Studiare il <strong>segno</strong> di numeratore e denominatore su ciascun intervallo.</div>
+    <div class="step">4. La frazione è positiva dove N e D hanno lo stesso segno; negativa dove hanno segni opposti.</div>
+    <div class="step">5. Rispettare le C.E.: gli zeri del denominatore sono sempre <strong>esclusi</strong>.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L2</span>
+    <span class="qt">Risolvi \(\dfrac{x-1}{x+2}&gt;0\).</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq-2\). Zeri: numeratore = 0 in \(x=1\); denominatore = 0 in \(x=-2\).</div>
+    <div class="step">Tabella dei segni:</div>
+    <div class="step">\(x&lt;-2\): N neg, D neg → fraz. pos. ✓</div>
+    <div class="step">\(-2&lt;x&lt;1\): N neg, D pos → fraz. neg. ✗</div>
+    <div class="step">\(x&gt;1\): N pos, D pos → fraz. pos. ✓</div>
+    <div class="ans">\(x\in(-\infty,-2)\cup(1,+\infty)\) &nbsp;(estremi esclusi)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L3</span>
+    <span class="qt">Risolvi \(\dfrac{x+3}{x-1}\leq0\).</span>
+    <div class="meta"><span class="stars">⭐</span><span class="db d1">1★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq1\). Zeri: \(x=-3\) (num.), \(x=1\) (den.).</div>
+    <div class="step">Fraz. \(\leq0\) dove N e D hanno segno opposto, o dove il numeratore è zero.</div>
+    <div class="step">\(-3\leq x&lt;1\): num. \(\geq0\), den. \(&lt;0\) → fraz. \(\leq0\) ✓ (incluso \(x=-3\))</div>
+    <div class="ans">\(x\in[-3,\,1)\)</div>
+    <div class="note">Attenzione: \(x=1\) è escluso (denominatore nullo); \(x=-3\) è incluso (numeratore nullo).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L4</span>
+    <span class="qt">Risolvi \(\dfrac{x^2-4}{x-1}&gt;0\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq1\). Fattorizzo: \(\dfrac{(x-2)(x+2)}{x-1}&gt;0\). Zeri: \(-2,\,1,\,2\).</div>
+    <div class="step">Studio del segno su 4 intervalli:
+      <br>\(x&lt;-2\): \((-)(-)/(-)=-\) ✗
+      <br>\(-2&lt;x&lt;1\): \((-)(+)/(-)=+\) ✓
+      <br>\(1&lt;x&lt;2\): \((-)(+)/(+)=-\) ✗
+      <br>\(x&gt;2\): \((+)(+)/(+)=+\) ✓
+    </div>
+    <div class="ans">\(x\in(-2,\,1)\cup(2,\,+\infty)\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L5</span>
+    <span class="qt">Risolvi \(\dfrac{x^2-1}{x^2+1}\geq0\).</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x^2+1&gt;0\) sempre → <strong>nessuna restrizione</strong>.</div>
+    <div class="step">Il denominatore è sempre positivo → la fraz. ha il segno del numeratore.</div>
+    <div class="step">\(x^2-1\geq0 \;\Leftrightarrow\; (x-1)(x+1)\geq0\)</div>
+    <div class="ans">\(x\leq-1\) oppure \(x\geq1\), cioè \(x\in(-\infty,-1]\cup[1,+\infty)\)</div>
+    <div class="note">Osservazione interessante: il denominatore non crea problemi → il problema si riduce a una disequazione intera.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L6</span>
+    <span class="qt">Risolvi \(\dfrac{2}{x+1}\geq1\). Attenzione: non moltiplicare direttamente per \((x+1)\)!</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq-1\). Riporta a secondo membro: \(\dfrac{2}{x+1}-1\geq0 \;\Rightarrow\; \dfrac{2-(x+1)}{x+1}\geq0 \;\Rightarrow\; \dfrac{1-x}{x+1}\geq0\)</div>
+    <div class="step">Zeri: \(x=1\) (num.), \(x=-1\) (den.).</div>
+    <div class="step">Fraz. \(\geq0\) in \(-1&lt;x\leq1\) (denominatore pos. e numeratore \(\geq0\)).</div>
+    <div class="ans">\(x\in(-1,\,1]\)</div>
+    <div class="note">Il metodo corretto è portare tutto a primo membro e studiare il segno. Moltiplicare entrambi i membri per \((x+1)\) senza considerarne il segno porta a errori.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">L7</span>
+    <span class="qt">Risolvi \(\dfrac{x^2-3x+2}{x-3}&lt;0\).</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">C.E.: \(x\neq3\). Fattorizzo il numeratore: \(x^2-3x+2=(x-1)(x-2)\).</div>
+    <div class="step">Studio del segno di \(\dfrac{(x-1)(x-2)}{x-3}\). Zeri e discontinuità: \(1,\,2,\,3\).</div>
+    <div class="step">Intervalli:
+      <br>\(x&lt;1\): \((-)(-)/(-)=-\) &lt;0 ✓
+      <br>\(1&lt;x&lt;2\): \((+)(-)/(-)=+\) ✗
+      <br>\(2&lt;x&lt;3\): \((+)(+)/(-)=-\) &lt;0 ✓
+      <br>\(x&gt;3\): \((+)(+)/(+)=+\) ✗
+    </div>
+    <div class="ans">\(x\in(-\infty,1)\cup(2,3)\)</div>
+  </div>
+</div>
+
+<!-- ─ M · SISTEMI DI DISEQUAZIONI ─ -->
+<div class="topic">M &nbsp;·&nbsp; Sistemi di disequazioni</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M1</span>
+    <span class="qt">Come si risolve un sistema di disequazioni? Cos'è la soluzione del sistema?</span>
+    <div class="meta"><span class="stars">⬜</span><span class="db d0">0★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Risposta attesa</button>
+  <div class="sol">
+    <div class="step">Si risolve ogni disequazione separatamente, poi si prende l'<strong>intersezione</strong> degli insiemi soluzione.</div>
+    <div class="step">La soluzione del sistema è l'insieme dei valori di \(x\) che soddisfano <em>simultaneamente</em> tutte le disequazioni.</div>
+    <div class="note">Strumento utile: la retta reale con gli intervalli sovrapposti. La soluzione è la parte comune.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M2</span>
+    <span class="qt">Risolvi il sistema: \(\begin{cases} x^2-x-6\leq0 \\ x&gt;0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I disequazione: \((x+2)(x-3)\leq0 \;\Rightarrow\; -2\leq x\leq3\)</div>
+    <div class="step">II disequazione: \(x&gt;0\)</div>
+    <div class="step">Intersezione: \(0&lt;x\leq3\)</div>
+    <div class="ans">\(x\in(0,\,3]\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M3</span>
+    <span class="qt">Risolvi il sistema: \(\begin{cases} x^2-4&gt;0 \\ x^2-5x+6\leq0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: \(x^2-4&gt;0 \;\Rightarrow\; x&lt;-2\;\text{ o }\;x&gt;2\)</div>
+    <div class="step">II: \(x^2-5x+6\leq0 \;\Rightarrow\; (x-2)(x-3)\leq0 \;\Rightarrow\; 2\leq x\leq3\)</div>
+    <div class="step">Intersezione: \(x&gt;2\) AND \(2\leq x\leq3\) → \(2&lt;x\leq3\)</div>
+    <div class="ans">\(x\in(2,\,3]\)</div>
+    <div class="note">Attenzione: \(x=2\) è escluso dalla I disequazione (stretta).</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M4</span>
+    <span class="qt">Risolvi il sistema: \(\begin{cases} x^2-1\geq0 \\ 2x^2-3x-2&lt;0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: \((x-1)(x+1)\geq0 \;\Rightarrow\; x\leq-1\;\text{ o }\;x\geq1\)</div>
+    <div class="step">II: \(2x^2-3x-2&lt;0 \;\Rightarrow\; (2x+1)(x-2)&lt;0 \;\Rightarrow\; -\tfrac{1}{2}&lt;x&lt;2\)</div>
+    <div class="step">Intersezione tra \(\{x\leq-1\;\cup\;x\geq1\}\) e \(\{-\tfrac{1}{2}&lt;x&lt;2\}\):</div>
+    <div class="step">\(\quad\) Parte sinistra: \(x\leq-1\) ∩ \(-\tfrac{1}{2}&lt;x\) = vuoto.</div>
+    <div class="step">\(\quad\) Parte destra: \(x\geq1\) ∩ \(x&lt;2\) = \([1,2)\).</div>
+    <div class="ans">\(x\in[1,\,2)\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M5</span>
+    <span class="qt">Risolvi il sistema con disequazione frazionaria: \(\begin{cases} \dfrac{x-1}{x+2}\geq0 \\[6pt] x^2-x-2\leq0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: C.E. \(x\neq-2\). \(\dfrac{x-1}{x+2}\geq0 \;\Rightarrow\; x\leq-2\;\text{ (escluso)}\;\cup\;x\geq1\) &nbsp;→ \(x\in(-\infty,-2)\cup[1,+\infty)\)</div>
+    <div class="step">II: \(x^2-x-2\leq0 \;\Rightarrow\; (x-2)(x+1)\leq0 \;\Rightarrow\; -1\leq x\leq2\)</div>
+    <div class="step">Intersezione tra \((-\infty,-2)\cup[1,+\infty)\) e \([-1,2]\):</div>
+    <div class="step">\(\quad\) \((-\infty,-2)\) ∩ \([-1,2]\) = vuoto.</div>
+    <div class="step">\(\quad\) \([1,+\infty)\) ∩ \([-1,2]\) = \([1,2]\).</div>
+    <div class="ans">\(x\in[1,\,2]\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M6</span>
+    <span class="qt">Risolvi il sistema: \(\begin{cases} \dfrac{x+1}{x-2}&lt;0 \\[6pt] x^2-9&lt;0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: C.E. \(x\neq2\). Zeri: \(-1\) (num.), \(2\) (den.). Fraz. \(&lt;0\) per \(-1&lt;x&lt;2\).</div>
+    <div class="step">II: \((x-3)(x+3)&lt;0 \;\Rightarrow\; -3&lt;x&lt;3\)</div>
+    <div class="step">Intersezione: \((-1,2)\) ∩ \((-3,3)\) = \((-1,2)\)</div>
+    <div class="ans">\(x\in(-1,\,2)\)</div>
+    <div class="note">Nota: il punto \(x=2\) è già escluso dalla C.E. della I, quindi l'intersezione non presenta problemi aggiuntivi.</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M7</span>
+    <span class="qt">Risolvi il sistema: \(\begin{cases} x^2-2x-3&gt;0 \\ 2x-1\geq0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐</span><span class="db d2">2★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: \((x-3)(x+1)&gt;0 \;\Rightarrow\; x&lt;-1\;\text{ o }\;x&gt;3\)</div>
+    <div class="step">II: \(x\geq\tfrac{1}{2}\)</div>
+    <div class="step">Intersezione: \(x&gt;3\) (l'altra parte \(x&lt;-1\) è incompatibile con \(x\geq\tfrac{1}{2}\)).</div>
+    <div class="ans">\(x\in(3,\,+\infty)\)</div>
+  </div>
+</div>
+
+<div class="qc">
+  <div class="qh"><span class="qn">M8</span>
+    <span class="qt">Risolvi il sistema con due disequazioni frazionarie: \(\begin{cases} \dfrac{1}{x}&gt;0 \\[6pt] \dfrac{x-2}{x+1}\leq0 \end{cases}\)</span>
+    <div class="meta"><span class="stars">⭐⭐⭐</span><span class="db d3">3★</span></div>
+  </div>
+  <button class="tog" onclick="tog(this)"><span class="arr">▶</span> Soluzione</button>
+  <div class="sol">
+    <div class="step">I: \(\dfrac{1}{x}&gt;0 \;\Rightarrow\; x&gt;0\)</div>
+    <div class="step">II: C.E. \(x\neq-1\). Zeri: \(2\) (num.), \(-1\) (den.). Fraz. \(\leq0\) per \(-1&lt;x\leq2\).</div>
+    <div class="step">Intersezione: \(x&gt;0\) ∩ \((-1,2]\) = \((0,\,2]\)</div>
+    <div class="ans">\(x\in(0,\,2]\)</div>
+  </div>
+</div>
+
+</div><!-- fine sec-dq -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SCHEDA C — GRIGLIE DI VALUTAZIONE
+══════════════════════════════════════════════════ -->
+<div class="sec" id="sec-gv">
+
+<!-- GRIGLIA EQUAZIONI -->
+<div class="gblock">
+  <div class="gtit gtit-eq">📐 Griglia di Valutazione — Equazioni di 2° grado</div>
+  <div class="gwrap">
+    <table class="g">
+      <thead><tr><th style="width:9%">Voto</th><th style="width:24%">Livello</th><th>Descrittori osservativi</th></tr></thead>
+      <tbody>
+        <tr><td><span class="vt vgr">2–3</span></td><td><strong>Gravemente insufficiente</strong></td><td>Non sa impostare nessun tipo di equazione di 2° grado. Non conosce la formula quadratica né il significato del discriminante. Confonde equazione con disequazione.</td></tr>
+        <tr><td><span class="vt vi">4</span></td><td><strong>Insufficiente</strong></td><td>Conosce la formula generale ma commette errori sistematici. Non riconosce casi particolari (monomie, pure, quadrati perfetti). Nelle equazioni fratte non applica le C.E.</td></tr>
+        <tr><td><span class="vt vs">5</span></td><td><strong>Quasi sufficiente</strong></td><td>Sa applicare la formula quadratica in casi standard. Conosce il significato di \(\Delta\). Incerto su scomposizione e formula ridotta. Dimentica talvolta di verificare le soluzioni nelle fratte.</td></tr>
+        <tr><td><span class="vt vd">6</span></td><td><strong>Sufficiente</strong></td><td>Sa risolvere con tutti i metodi principali. Conosce e applica le formule di Viète in casi semplici. Gestisce correttamente le C.E. nelle fratte. Risolve equazioni biquadratiche semplici.</td></tr>
+        <tr><td><span class="vt vd">7</span></td><td><strong>Discreto</strong></td><td>Sceglie autonomamente il metodo più efficiente. Sa applicare la regola di Cartesio. Risolve equazioni di grado superiore per scomposizione. Sa costruire equazioni a partire dalle radici.</td></tr>
+        <tr><td><span class="vt vb">8</span></td><td><strong>Buono</strong></td><td>Padronanza completa dei metodi e dei casi particolari. Sa lavorare con parametri (es. trovare \(k\) affinché \(\Delta\geq0\)). Risolve equazioni fratte con discriminante senza errori. Espone in modo chiaro.</td></tr>
+        <tr><td><span class="vt vo">9</span></td><td><strong>Ottimo</strong></td><td>Collega le soluzioni al grafico della parabola. Affronta equazioni parametriche e problemi inversi con sicurezza. Usa Cartesio correttamente. Linguaggio rigoroso, ragionamento autonomo.</td></tr>
+        <tr><td><span class="vt vo">10</span></td><td><strong>Eccellente</strong></td><td>Visione completa e critica. Motiva ogni scelta metodologica, riconosce tutti i casi speciali, collega algebra e geometria della parabola. Risponde con sicurezza alle domande 3★. Generalizza con proprietà.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="nc"><strong>💡 Note per la conduzione (Equazioni):</strong> Iniziare da domande 0★–1★. Procedere con 2★ se le risposte sono solide. Usare le 3★ solo per la fascia alta (voto 8+). Per allievi con DSA: privilegiare domande concettuali/verbali (A1, B4, C1, D1, D2) e ridurre quelle con calcolo rapido.</div>
+
+<!-- GRIGLIA DISEQUAZIONI -->
+<div class="gblock">
+  <div class="gtit gtit-dq">📊 Griglia di Valutazione — Disequazioni di 2° grado</div>
+  <div class="gwrap">
+    <table class="g">
+      <thead><tr><th style="width:9%">Voto</th><th style="width:24%">Livello</th><th>Descrittori osservativi</th></tr></thead>
+      <tbody>
+        <tr><td><span class="vt vgr">2–3</span></td><td><strong>Gravemente insufficiente</strong></td><td>Non distingue disequazione da equazione. Non sa cosa rappresenta la soluzione. Non conosce il ruolo del segno di \(a\). Non sa cosa sia una disequazione frazionaria.</td></tr>
+        <tr><td><span class="vt vi">4</span></td><td><strong>Insufficiente</strong></td><td>Trova le radici dell'equazione associata ma non sa interpretarle per la disequazione. Confonde il verso rispetto al segno di \(a\). Non imposta un sistema di disequazioni. Non applica le C.E. nelle fratte.</td></tr>
+        <tr><td><span class="vt vs">5</span></td><td><strong>Quasi sufficiente</strong></td><td>Risolve disequazioni con \(a&gt;0\) e \(\Delta&gt;0\) in casi semplici, ma con incertezze sul verso. Non gestisce \(\Delta\leq0\). Esprime la soluzione in modo impreciso (aperto/chiuso confuso). Non risolve disequazioni frazionarie.</td></tr>
+        <tr><td><span class="vt vd">6</span></td><td><strong>Sufficiente</strong></td><td>Risolve le disequazioni di 2° grado standard. Distingue stretta e larga. Esprime la soluzione come intervallo. Risolve semplici sistemi di disequazioni intere. Imposta (anche con errori) una disequazione frazionaria lineare.</td></tr>
+        <tr><td><span class="vt vd">7</span></td><td><strong>Discreto</strong></td><td>Gestisce con sicurezza i casi \(\Delta=0\) e \(\Delta&lt;0\). Risolve sistemi di disequazioni intere e miste. Imposta e risolve disequazioni frazionarie lineari correttamente. Collega la soluzione al grafico della parabola.</td></tr>
+        <tr><td><span class="vt vb">8</span></td><td><strong>Buono</strong></td><td>Padronanza dei casi particolari. Risolve sistemi con disequazioni frazionarie. Risolve disequazioni frazionarie con numeratore/denominatore di 2° grado. Studia correttamente il segno con la tabella. Non commette errori con \(a&lt;0\).</td></tr>
+        <tr><td><span class="vt vo">9</span></td><td><strong>Ottimo</strong></td><td>Affronta disequazioni parametriche. Risolve sistemi misti (interi e frazionari) con sicurezza. Collega con proprietà il segno del trinomio alla geometria. Ragionamento rigoroso e ben articolato.</td></tr>
+        <tr><td><span class="vt vo">10</span></td><td><strong>Eccellente</strong></td><td>Visione globale e critica. Distingue e collega ogni tipo di disequazione. Risponde con fluidità alle domande 3★. Sa costruire disequazioni con soluzioni prestabilite. Linguaggio matematico preciso, totale autonomia.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="nc"><strong>💡 Note per la conduzione (Disequazioni):</strong> Le disequazioni si prestano molto al ragionamento grafico orale: chiedere di «disegnare la parabola» anche solo a schizzo. Domande G2, G3, I1 sono ottimi discriminanti concettuali (nessun calcolo). Per la fascia alta usare I3, M4, M5, M8. Per allievi con DSA: supportare con schema parabola già tracciato; per le frazionarie fornire già la tabella dei segni da completare.</div>
+
+</div><!-- fine sec-gv -->
+
+
+<!-- ══ SCRIPT ══ -->
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  var sec = document.getElementById('sec-'+id);
+  var btn = document.getElementById('btn-'+id);
+  if(sec) sec.classList.add('on');
+  if(btn) btn.classList.add('active');
+  if(sec && window.MathJax && MathJax.typesetPromise)
+    MathJax.typesetPromise([sec]);
+}
+
+function tog(btn){
+  const sol=btn.nextElementSibling;
+  const arr=btn.querySelector('.arr');
+  const isOpen=sol.classList.contains('open');
+  sol.classList.toggle('open');
+  arr.style.transform=isOpen?'rotate(0deg)':'rotate(90deg)';
+  btn.childNodes.forEach(n=>{
+    if(n.nodeType===3){
+      const t=n.textContent.trim();
+      if(t==='Risposta attesa'||t==='Soluzione')
+        n.textContent=' '+(isOpen?t:t.replace(/Risposta attesa|Soluzione/,'Nascondi ▲'));
+    }
+  });
+  if(window.MathJax&&MathJax.typesetPromise&&!isOpen)
+    MathJax.typesetPromise([sol]);
+}
+</script>
+</body>
+</html>
